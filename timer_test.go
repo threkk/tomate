@@ -5,58 +5,25 @@ import (
 	"testing"
 )
 
-func TestNewTimer_nochan(t *testing.T) {
+func TestNewTimer(t *testing.T) {
 	timer := NewTimer()
-	if timer.Remaining != 0 || timer.pause != false || timer.Finished != nil {
+	if timer.pause != false || timer.Finished != nil {
 		t.Error("Testing not properly initialised")
 	}
-
-	ch := make(chan bool, 1)
-	timer = NewTimer(ch, ch)
-	if timer.Remaining != 0 || timer.pause != false || timer.Finished != nil {
-		t.Error("Testing not properly initialised")
-	}
-	close(ch)
 }
 
-func TestNewTimer_chan(t *testing.T) {
-	ch := make(chan bool, 1)
-	timer := NewTimer(ch)
-	if timer.Remaining != 0 || timer.pause != false || timer.Finished == nil {
-		t.Error("Testing not properly initialised")
-	}
-	close(ch)
-}
-
-func TestTimer_Pause(t *testing.T) {
+func TestTimer_Toggle(t *testing.T) {
 	timer := NewTimer()
 	if timer.pause {
 		t.Error("Invalid default on pause")
 	}
 
-	timer.Pause()
+	timer.Toggle()
 	if !timer.pause {
 		t.Error("Timer not paused")
 	}
 
-	timer.Pause()
-	if !timer.pause {
-		t.Error("Timer still not paused")
-	}
-}
-
-func TestTimer_Resume(t *testing.T) {
-	timer := NewTimer()
-	if timer.pause {
-		t.Error("Invalid default on pause")
-	}
-
-	timer.Resume()
-	if timer.pause {
-		t.Error("Timer paused")
-	}
-
-	timer.Resume()
+	timer.Toggle()
 	if timer.pause {
 		t.Error("Timer still paused")
 	}
@@ -82,18 +49,6 @@ func ExampleTimer_OnTick_pause() {
 	// Output:
 }
 
-func ExampleTimer_OnStart() {
-	timer := NewTimer()
-	timer.OnStart = func() {
-		fmt.Print("start")
-	}
-	timer.OnTick = func(r int64) {
-		fmt.Printf("%d", r)
-	}
-	timer.Start(3)
-	// Output: start210
-}
-
 func ExampleTimer_OnFinish() {
 	timer := NewTimer()
 	timer.OnTick = func(r int64) {
@@ -108,15 +63,13 @@ func ExampleTimer_OnFinish() {
 
 func ExampleTimer_Stop() {
 	ch := make(chan bool, 1)
-	timer := NewTimer(ch)
-	timer.OnStart = func() {
-		fmt.Print("start")
-	}
+	timer := NewTimer()
+	timer.Finished = ch
 	timer.OnFinish = func() {
 		fmt.Print("stop")
 	}
 	go timer.Start(10)
 	timer.Stop()
 	<-timer.Finished
-	// Output: startstop
+	// Output: stop
 }
