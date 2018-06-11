@@ -1,7 +1,9 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"os"
 )
 
 func main() {
@@ -12,5 +14,17 @@ func main() {
 	timer.OnFinish = func() {
 		fmt.Println("Exiting...")
 	}
-	timer.Start(3)
+
+	go func() {
+		scanner := bufio.NewScanner(os.Stdin)
+		scanner.Split(bufio.ScanRunes)
+
+		for {
+			for scanner.Scan() {
+				fmt.Printf("Pressed %s\n", scanner.Text())
+			}
+		}
+	}()
+
+	timer.Start(20)
 }
