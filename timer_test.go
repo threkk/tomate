@@ -31,18 +31,18 @@ func TestTimer_Toggle(t *testing.T) {
 
 func ExampleTimer_OnTick() {
 	timer := NewTimer()
-	timer.OnTick = func(r int64) {
-		fmt.Printf("%d", r)
+	timer.OnTick = func(c int64, t int64) {
+		fmt.Printf("%d", c)
 	}
 	timer.Start(3)
-	// Output: 210
+	// Output: 123
 }
 
 func ExampleTimer_OnTick_pause() {
 	timer := NewTimer()
 	timer.pause = true
-	timer.OnTick = func(r int64) {
-		fmt.Printf("%d", r)
+	timer.OnTick = func(c int64, t int64) {
+		fmt.Printf("%d", c)
 	}
 	go timer.Start(3)
 	timer.stop <- true
@@ -51,14 +51,14 @@ func ExampleTimer_OnTick_pause() {
 
 func ExampleTimer_OnFinish() {
 	timer := NewTimer()
-	timer.OnTick = func(r int64) {
-		fmt.Printf("%d", r)
+	timer.OnTick = func(c int64, t int64) {
+		fmt.Printf("%d", c)
 	}
 	timer.OnFinish = func() {
 		fmt.Print("stop")
 	}
 	timer.Start(3)
-	// Output: 210stop
+	// Output: 123stop
 }
 
 func ExampleTimer_Stop() {
