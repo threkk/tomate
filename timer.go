@@ -36,7 +36,6 @@ func (timer *Timer) Start(seconds int64) {
 	timer.ticker = time.NewTicker(time.Second)
 
 	defer timer.ticker.Stop()
-	defer close(timer.stop)
 
 	for {
 		select {

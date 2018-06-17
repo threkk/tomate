@@ -6,6 +6,19 @@ import (
 
 // Based on http://wiki.bash-hackers.org/scripting/terminalcodes
 const (
+	// erase screen and go home
+	screen = "\x1b[2J\x1b[H"
+	// erase line and go to start of line
+	line = "\x1b[2K\x1b[G"
+	// erase to begin of screen
+	bos = "\x1b[1J"
+	// erase to end of screen
+	eos = "\x1b[J"
+	// erase to begin of line
+	bo = "\x1b[1K"
+	// erase to end of line
+	eol = "\x1b[K"
+
 	defaulForeground  = "\x1b[39m"
 	defaultBackground = "\x1b[49m"
 
@@ -81,4 +94,39 @@ func Red(str string) string {
 // DarkGrey - Colors the output in dark grey.
 func DarkGrey(str string) string {
 	return apply(str, bBlack)
+}
+
+// Magenta - Colors the output in magenta.
+func Magenta(str string) string {
+	return apply(str, magenta)
+}
+
+// LightGrey - Colors the output in light grey.
+func LightGrey(str string) string {
+	return apply(str, bWhite)
+}
+
+// Blink - Blinking string.
+func Blink(str string) string {
+	return apply(str, blink)
+}
+
+// Black - Colors the output in black.
+func Black(str string) string {
+	return apply(str, black)
+}
+
+// Green - Colors the output in green.
+func Green(str string) string {
+	return apply(str, green)
+}
+
+// LightGreen - Colors the output in bring green.
+func LightGreen(str string) string {
+	return apply(str, bGreen)
+}
+
+// ClearScreen - Cleans the screen.
+func ClearScreen() string {
+	return screen
 }
