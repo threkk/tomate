@@ -3,7 +3,6 @@
 package terminal
 
 import (
-	"log"
 	"os"
 	"os/exec"
 	"regexp"
@@ -20,7 +19,6 @@ func GetColumns() uint {
 	cmd.Stdin = os.Stdin
 	out, err := cmd.Output()
 	if err != nil {
-		log.Println(err)
 		return 80
 	}
 
@@ -33,7 +31,6 @@ func GetColumns() uint {
 
 	c, err := strconv.ParseUint(string(cols[1]), 10, 32)
 	if err != nil {
-		log.Println(err)
 		return 80
 	}
 

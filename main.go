@@ -14,18 +14,22 @@ import (
 
 const version = "1.0.0"
 
-var signals chan os.Signal
+var stop chan os.Signal
+var pause chan os.Signal
 var size int
 var duration time.Duration
 var message string
+var isQuiet bool
 var isRepeat bool
 var isVersion bool
 
 func usage() {
 	fmt.Printf("tomate - Simple pomodoro 🍅 (v%s)\n", version)
 	fmt.Printf("\n")
+	fmt.Printf("Stop it with Ctrl+C. Pause/resume with Ctrl+Z\n")
+	fmt.Printf("\n")
 	fmt.Printf("Usage:\n")
-	fmt.Printf("  tomate [-repeat] [-duration <duration>] [-message <message>]")
+	fmt.Printf("  tomate [-repeat] [-quiet] [-duration <duration>] [-message <message>]\n")
 	fmt.Printf("  tomate -h | -help\n")
 	fmt.Printf("  tomato -v | -version\n")
 	fmt.Printf("\n")
@@ -45,12 +49,14 @@ func init() {
 
 	flag.DurationVar(&duration, "duration", 25*time.Minute, "Duration of the timer. 25 minutes by default.")
 	flag.StringVar(&message, "message", "", "Message to display once the timer finishes.")
+	flag.BoolVar(&isQuiet, "quiet", false, "Quite mode (hides the UI).")
 	flag.BoolVar(&isRepeat, "repeat", false, "Restart the pomodoro once it finishes.")
 	flag.BoolVar(&isVersion, "version", false, "Show the version number")
 
 	flag.Usage = usage
 
-	signals = make(chan os.Signal)
+	stop = make(chan os.Signal)
+	pause = make(chan os.Signal)
 }
 
 func main() {
@@ -70,9 +76,11 @@ func main() {
 	bar := &ui.HomeBrewBar{Size: size}
 
 	t := timer.NewTimer()
-	t.OnTick = func(current int64, total int64) {
-		frame := bar.Frame(current, total)
-		fmt.Printf("\r%s", frame)
+	if !isQuiet {
+		t.OnTick = func(current int64, total int64) {
+			frame := bar.Frame(current, total)
+			fmt.Printf("\r%s", frame)
+		}
 	}
 
 	if message != "" {
@@ -81,12 +89,21 @@ func main() {
 		}
 	}
 
-	// Listen to signals to exit.
-	signal.Notify(signals, syscall.SIGINT, syscall.SIGTERM)
+	// Listen to signals
+	signal.Notify(stop, syscall.SIGINT, syscall.SIGTERM)
+	signal.Notify(pause, syscall.SIGTSTP, syscall.SIGCONT)
 	go func() {
-		<-signals
-		t.Stop()
-		os.Exit(0)
+		for {
+			select {
+			case <-stop:
+				t.Stop()
+				os.Exit(0)
+			case <-pause:
+				fmt.Printf("\r")
+				t.Toggle()
+				break
+			}
+		}
 	}()
 
 	t.Start(int64(duration.Seconds()))
