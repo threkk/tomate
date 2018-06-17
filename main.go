@@ -43,7 +43,7 @@ func leftpad(str string, pad int) string {
 func init() {
 	size = int(terminal.GetColumns())
 
-	flag.DurationVar(&duration, "duration", 0, "Duration of the timer. 25 minutes by default.")
+	flag.DurationVar(&duration, "duration", 25*time.Minute, "Duration of the timer. 25 minutes by default.")
 	flag.StringVar(&message, "message", "", "Message to display once the timer finishes.")
 	flag.BoolVar(&isRepeat, "repeat", false, "Restart the pomodoro once it finishes.")
 	flag.BoolVar(&isVersion, "version", false, "Show the version number")
