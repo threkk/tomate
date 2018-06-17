@@ -1,5 +1,6 @@
 // +build windows
-package main
+
+package terminal
 
 import (
 	"syscall"
@@ -14,7 +15,9 @@ type winsize struct {
 	Ypixel uint16
 }
 
-func getColumns() uint {
+// GetColumns - Return the size of the terminal at the moment it is called.
+// Defaults to 80 if error.
+func GetColumns() uint {
 	ws := &winsize{}
 	retCode, _, errno := syscall.Syscall(syscall.SYS_IOCTL,
 		uintptr(syscall.Stdin),

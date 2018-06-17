@@ -1,6 +1,6 @@
 // +build !windows
 
-package main
+package terminal
 
 import (
 	"log"
@@ -13,7 +13,9 @@ import (
 // Extracted from https://stackoverflow.com/questions/16569433/get-terminal-size-in-go/16576712#16576712
 const sttyRowCols = `(?m)\d+ (\d+)`
 
-func getColumns() uint {
+// GetColumns - Return the size of the terminal at the moment it is called.
+// Defaults to 80 if error.
+func GetColumns() uint {
 	cmd := exec.Command("stty", "size")
 	cmd.Stdin = os.Stdin
 	out, err := cmd.Output()

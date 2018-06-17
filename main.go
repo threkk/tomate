@@ -3,6 +3,9 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/threkk/tomate/terminal"
+	"github.com/threkk/tomate/timer"
+	"github.com/threkk/tomate/ui"
 	"os"
 	"os/signal"
 	"syscall"
@@ -19,7 +22,7 @@ var isRepeat bool
 var isVersion bool
 
 func usage() {
-	fmt.Printf("tomato - Simple pomodoro 🍅 (v%s)\n", version)
+	fmt.Printf("tomate - Simple pomodoro 🍅 (v%s)\n", version)
 	fmt.Printf("\n")
 	fmt.Printf("Usage:\n")
 	fmt.Printf("  tomate [-repeat] [-duration <duration>] [-message <message>]")
@@ -38,7 +41,7 @@ func leftpad(str string, pad int) string {
 }
 
 func init() {
-	size = int(getColumns())
+	size = int(terminal.GetColumns())
 
 	flag.DurationVar(&duration, "duration", 0, "Duration of the timer. 25 minutes by default.")
 	flag.StringVar(&message, "message", "", "Message to display once the timer finishes.")
@@ -64,17 +67,17 @@ func main() {
 	}
 
 	// Uses the Homebrew bar ui.
-	ui := &HomeBrewBar{Size: size}
+	bar := &ui.HomeBrewBar{Size: size}
 
-	timer := NewTimer()
-	timer.OnTick = func(current int64, total int64) {
-		bar := ui.Frame(current, total)
-		fmt.Printf("\r%s", bar)
+	t := timer.NewTimer()
+	t.OnTick = func(current int64, total int64) {
+		frame := bar.Frame(current, total)
+		fmt.Printf("\r%s", frame)
 	}
 
 	if message != "" {
-		timer.OnFinish = func() {
-			fmt.Printf("\n\n%s\n\n", leftpad(Bold(message), size))
+		t.OnFinish = func() {
+			fmt.Printf("\n\n%s\n\n", leftpad(ui.Bold(message), size))
 		}
 	}
 
@@ -82,12 +85,12 @@ func main() {
 	signal.Notify(signals, syscall.SIGINT, syscall.SIGTERM)
 	go func() {
 		<-signals
-		timer.Stop()
+		t.Stop()
 		os.Exit(0)
 	}()
 
-	timer.Start(int64(duration.Seconds()))
+	t.Start(int64(duration.Seconds()))
 	for isRepeat {
-		timer.Start(int64(duration.Seconds()))
+		t.Start(int64(duration.Seconds()))
 	}
 }
