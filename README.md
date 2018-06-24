@@ -1,7 +1,6 @@
-# tomate
+# tomate [![GoDoc](https://godoc.org/github.com/threkk/tomate?status.svg)](https://godoc.org/github.com/threkk/tomate) [![Go Report Card](https://goreportcard.com/badge/github.com/threkk/tomate)](https://goreportcard.com/report/github.com/threkk/tomate) 
 > Simple pomodoro 🍅     
 
-[![GoDoc](https://godoc.org/github.com/threkk/tomate?status.svg)](https://godoc.org/github.com/threkk/tomate) [![Code Climate](https://codeclimate.com/github/threkk/tomate/badges/gpa.svg)](https://codeclimate.com/github/threkk/tomate) [![Go Report Card](https://goreportcard.com/badge/github.com/threkk/tomate)](https://goreportcard.com/report/github.com/threkk/tomate) 
 ## Features 
 Simple pomodoro timer whith a few useful functions:
 - **Duration**: Duration can be changed to any time wished instead of the standard 25 minutes.
