@@ -1,4 +1,5 @@
-# tomate [![GoDoc](https://godoc.org/github.com/threkk/tomate?status.svg)](https://godoc.org/github.com/threkk/tomate) [![Go Report Card](https://goreportcard.com/badge/github.com/threkk/tomate)](https://goreportcard.com/report/github.com/threkk/tomate) 
+# tomate    
+[![GoDoc](https://godoc.org/github.com/threkk/tomate?status.svg)](https://godoc.org/github.com/threkk/tomate) [![Go Report Card](https://goreportcard.com/badge/github.com/threkk/tomate)](https://goreportcard.com/report/github.com/threkk/tomate) [![GitHub license](https://img.shields.io/github/license/threkk/tomate.svg)](https://github.com/threkk/tomate/blob/master/LICENSE.md) [![Twitter](https://img.shields.io/twitter/url/https/github.com/threkk/tomate.svg?style=social)](https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2Fthrekk%2Ftomate)
 > Simple pomodoro 🍅     
 
 ## Features 
