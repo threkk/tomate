@@ -13,8 +13,12 @@ Simple pomodoro timer whith a few useful functions:
 ## Install
 
 ```
-go get github.com/threkk/tomate
+go get github.com/threkk/tomate/cmd/tomate
 ```
+
+## Usage
+A duration is a optionally signed sequence of decimal numbers followed by an
+unit. A unit is `h` for hours, `m` for minutes and `s` for seconds.
 
 ## Examples
 - **Start a timer of 25 minutes.**
@@ -37,11 +41,11 @@ $ tomate -duration 1m -quiet
 $ tomate -duration 1h -message "🍅"
 ```
 
-## Usage
-A duration is a optionally signed sequence of decimal numbers followed by an
-unit. A unit is `h` for hours, `m` for minutes and `s` for seconds.
+## Maintainer
+Alberto Mtnz ([@threkk](https://threkk.com))
 
-## Meta
-- **Author:** Alberto Martinez de Murga ([@threkk](https://threkk.com))
-- **License:** BSD-3. See `LICENSE` for more information.
-- **Repository:** https://github.com/threkk/tomate
+## Contribute
+Did you find a problem? Check the [issues](https://github.com/threkk/tomate/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc)!
+
+## License
+BSD-3. See `LICENSE` for more information.
